@@ -123,8 +123,7 @@ static void indicate_connectivity_internal(void) {
     struct blink_item blink = {.duration_ms = CONFIG_RGBLED_WIDGET_CONN_BLINK_MS};
 
 #if !IS_ENABLED(CONFIG_ZMK_SPLIT) || IS_ENABLED(CONFIG_ZMK_SPLIT_ROLE_CENTRAL)
-    struct zmk_endpoint_instance ep = zmk_endpoint_get_selected();
-switch (ep.transport) {
+    switch (zmk_endpoint_get_selected().transport) {
     case ZMK_TRANSPORT_USB:
 #if IS_ENABLED(CONFIG_RGBLED_WIDGET_CONN_SHOW_USB)
         LOG_INF("USB connected, blinking %s", color_names[CONFIG_RGBLED_WIDGET_CONN_COLOR_USB]);
