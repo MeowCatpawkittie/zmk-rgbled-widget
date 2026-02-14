@@ -119,19 +119,12 @@ static void set_rgb_leds(uint8_t color, uint16_t duration_ms) {
 // separate thread
 K_MSGQ_DEFINE(led_msgq, sizeof(struct blink_item), 16, 1);
 
-void indicate_connectivity(void);
-
 static void indicate_connectivity_internal(void) {
     struct blink_item blink = {.duration_ms = CONFIG_RGBLED_WIDGET_CONN_BLINK_MS};
 
 #if !IS_ENABLED(CONFIG_ZMK_SPLIT) || IS_ENABLED(CONFIG_ZMK_SPLIT_ROLE_CENTRAL)
-#if defined(ZMK_ENDPOINT_NONE_COUNT)
-    switch (zmk_endpoint_get_selected().transport) {
-    case ZMK_TRANSPORT_USB:
-#else
     switch (zmk_endpoints_selected().transport) {
     case ZMK_TRANSPORT_USB:
-#endif
 #if IS_ENABLED(CONFIG_RGBLED_WIDGET_CONN_SHOW_USB)
         LOG_INF("USB connected, blinking %s", color_names[CONFIG_RGBLED_WIDGET_CONN_COLOR_USB]);
         blink.color = CONFIG_RGBLED_WIDGET_CONN_COLOR_USB;
